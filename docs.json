@@ -75,9 +75,10 @@
                   ]
                 },
                 {
-                  "group": "General concepts",
+                  "group": "Common architectures",
                   "pages": [
-                    "langgraph/guides/agents-overview"
+                    "langgraph/guides/agents-overview",
+                    "langgraph/guides/agents-and-workflows"
                     
                   ]
                 },
@@ -91,11 +92,41 @@
                       ]
                     },
                     {
+                      "group": "Subgraphs",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
                       "group": "Streaming",
                       "pages": [
                         "langgraph/guides/streaming/overview",
                         "langgraph/guides/streaming/use-in-agent",
                         "langgraph/guides/streaming/use-in-workflow"
+                      ]
+                    },
+                    {
+                      "group": "Models",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
+                      "group": "Tools",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
+                      "group": "MCP integration",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
+                      "group": "Context",
+                      "pages": [
+                        "langgraph/guides/stub"
                       ]
                     },
                     {
@@ -129,13 +160,7 @@
                       ]
                     },
                     {
-                      "group": "Tools",
-                      "pages": [
-                        "langgraph/guides/stub"
-                      ]
-                    },
-                    {
-                      "group": "Subgraphs",
+                      "group": "Evals",
                       "pages": [
                         "langgraph/guides/stub"
                       ]
@@ -159,6 +184,12 @@
                   "group": "Production features",
                   "pages": [
                     {
+                      "group": "LangGraph Platform components",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
                       "group": "Auth & access control",
                       "pages": [
                         "langgraph/guides/stub"
@@ -170,12 +201,35 @@
                         "langgraph/guides/stub"
                       ]
                     },
-                    
+                    {
+                      "group": "Threads",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
+                      "group": "Runs",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
+                    {
+                      "group": "Data management",
+                      "pages": [
+                        "langgraph/guides/stub"
+                      ]
+                    },
                     {
                       "group": "Webhooks",
                       "pages": [
                         "langgraph/guides/webhooks/overview",
                         "langgraph/guides/webhooks/use-webhooks"
+                      ]
+                    },
+                    {
+                      "group": "Double-texting",
+                      "pages": [
+                        "langgraph/guides/double-texting/overview"
                       ]
                     },
                     {
