@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def build_command(
-    args: Any | None,
+    args: Any,  # noqa: ARG001, ANN401
     src_dir: str = "src",
     build_dir: str = "build",
 ) -> int:
@@ -22,8 +22,8 @@ def build_command(
     orchestrates the build process.
 
     Args:
-        args: Command line arguments (currently unused, but maintained for
-            compatibility with CLI framework).
+        args: Command line arguments (not used in this function, but
+            included for compatibility with other commands).
         src_dir: Path to the source directory containing documentation files.
             Defaults to "src".
         build_dir: Path to the build directory where files will be copied.
@@ -50,6 +50,5 @@ def build_command(
     # Initialize builder and build docs
     builder = DocumentationBuilder(src_dir_path, build_dir_path)
     builder.build_all()
-
-    logger.info(f"Documentation built successfully in {build_dir_path}")
+    logger.info("Documentation built successfully in %s", build_dir_path)
     return 0

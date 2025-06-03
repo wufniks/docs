@@ -60,7 +60,7 @@ class DocumentationBuilder:
         Displays:
             A progress bar showing build progress and file counts.
         """
-        logger.info(f"Building from {self.src_dir} to {self.build_dir}")
+        logger.info("Building from %s to %s", self.src_dir, self.build_dir)
 
         # Clear build directory
         if self.build_dir.exists():
@@ -96,7 +96,9 @@ class DocumentationBuilder:
                 pbar.update(1)
 
         logger.info(
-            f"✅ Build complete: {copied_count} files copied, {skipped_count} files skipped",
+            "✅ Build complete: %d files copied, %d files skipped",
+            copied_count,
+            skipped_count,
         )
 
     def build_file(self, file_path: Path) -> None:
@@ -128,9 +130,9 @@ class DocumentationBuilder:
         # For now, just copy supported files directly
         if file_path.suffix.lower() in self.copy_extensions:
             shutil.copy2(file_path, output_path)
-            logger.info(f"Copied: {relative_path}")
+            logger.info("Copied: %s", relative_path)
         else:
-            logger.info(f"Skipped: {relative_path} (unsupported extension)")
+            logger.info("Skipped: %s (unsupported extension)", relative_path)
 
     def _build_file_with_progress(self, file_path: Path, pbar: tqdm) -> bool:
         """Build a single file with progress bar integration.
@@ -202,5 +204,7 @@ class DocumentationBuilder:
                 pbar.update(1)
 
         logger.info(
-            f"✅ Build complete: {copied_count} files copied, {skipped_count} files skipped",
+            "✅ Build complete: %d files copied, %d files skipped",
+            copied_count,
+            skipped_count,
         )
