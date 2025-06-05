@@ -7,7 +7,6 @@ import pytest
 
 from pipeline.tools.move_files import (
     _find_git_root,
-    _LinkChange,
     _rel_to_docs_root,
     _rewrite_links,
     _scan_and_rewrite,
@@ -69,17 +68,15 @@ class TestRewriteLinks:
             {"path": "page2.md", "content": "# Page 2"},
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
             old_abs = temp_dir / "page2.md"
             new_abs = temp_dir / "subdir" / "page2.md"
             md_file = temp_dir / "page1.md"
 
-            _rewrite_links(
+            changes = _rewrite_links(
                 md_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=False,
             )
 
@@ -98,17 +95,15 @@ class TestRewriteLinks:
             {"path": "target.md", "content": "# Target"},
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
             old_abs = temp_dir / "target.md"
             new_abs = temp_dir / "new" / "target.md"
             md_file = temp_dir / "index.md"
 
-            _rewrite_links(
+            changes = _rewrite_links(
                 md_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=False,
             )
 
@@ -135,18 +130,16 @@ class TestRewriteLinks:
             }
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
             old_abs = temp_dir / "nonexistent.md"
             new_abs = temp_dir / "new.md"
             md_file = temp_dir / "page.md"
 
             original_content = md_file.read_text(encoding="utf-8")
-            _rewrite_links(
+            changes = _rewrite_links(
                 md_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=False,
             )
 
@@ -161,18 +154,16 @@ class TestRewriteLinks:
             {"path": "page2.md", "content": "# Page 2"},
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
             old_abs = temp_dir / "page2.md"
             new_abs = temp_dir / "subdir" / "page2.md"
             md_file = temp_dir / "page1.md"
 
             original_content = md_file.read_text(encoding="utf-8")
-            _rewrite_links(
+            changes = _rewrite_links(
                 md_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=True,
             )
 
@@ -195,17 +186,15 @@ class TestRewriteLinks:
             {"path": "target.md", "content": "# Target\n## Section 1\n## Section 2"},
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
             old_abs = temp_dir / "target.md"
             new_abs = temp_dir / "foo" / "b.md"
             md_file = temp_dir / "page1.md"
 
-            _rewrite_links(
+            changes = _rewrite_links(
                 md_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=False,
             )
 
@@ -237,19 +226,16 @@ class TestRewriteLinks:
             {"path": "guide.md", "content": "# Guide\n## Setup"},
         ]
         with temp_directory(files) as temp_dir:
-            changes: list[_LinkChange] = []
-
             # Test rewriting links to docs.md
             old_abs = temp_dir / "docs.md"
             new_abs = temp_dir / "reference" / "docs.md"
             mdx_file = temp_dir / "page.mdx"
 
-            _rewrite_links(
+            changes = _rewrite_links(
                 mdx_file,
                 old_abs,
                 new_abs,
                 temp_dir,
-                changes=changes,
                 dry_run=False,
             )
 
