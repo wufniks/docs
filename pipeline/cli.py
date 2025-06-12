@@ -12,7 +12,7 @@ from pathlib import Path
 
 from pipeline.commands.build import build_command
 from pipeline.commands.dev import dev_command
-from pipeline.tools.move_files import move_file_with_link_updates
+from pipeline.tools.links import drop_suffix_from_links, move_file_with_link_updates
 from pipeline.tools.notebook.convert import convert_notebook
 from pipeline.tools.parser import to_mint
 
@@ -62,6 +62,8 @@ def migrate_command(args) -> None:  # noqa: ANN001
         logger.exception("Unsupported file extension %s", extension)
         sys.exit(1)
 
+    _, mint_markdown = drop_suffix_from_links(mint_markdown)
+
     if args.dry_run:
         # Print the converted markdown to stdout
         print(mint_markdown)  # noqa: T201 (OK to use print)
@@ -71,14 +73,17 @@ def migrate_command(args) -> None:  # noqa: ANN001
             file.write(mint_markdown)
         logger.info("Output written to %s", args.output_file)
     else:
+        # For now, we'll keep the .md extension, so we can see side by side changes
+        # for md files!
+        new_extension = ".md"  # .mdx
+
         # New output path should have an `.mdx` extension.
         # If extension is different, we delete the old file
-        if extension != ".mdx":
+        if extension != new_extension:
             args.path.unlink(missing_ok=True)
             logger.info("Deleted old file %s", args.path)
 
-        # Change extension to .mdx
-        new_path = args.path.with_suffix(".mdx")
+        new_path = args.path.with_suffix(new_extension)
 
         with new_path.open("w", encoding="utf-8") as file:
             file.write(mint_markdown)
