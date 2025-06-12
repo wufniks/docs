@@ -17,8 +17,8 @@ class TokenType(Enum):
     """All token kinds recognised by the Markdown lexer."""
 
     HEADING = auto()  # #, ##, ### …
-    FENCE = auto()  # ```lang [meta]
-    FENCE_END = auto()  # ```
+    FENCE = auto()  # ```lang [meta] or fence close
+    FRONT_MATTER = auto()  # ---
     UL_MARKER = auto()  # -, +, *
     OL_MARKER = auto()  # 1.  2)  etc.
     BLOCKQUOTE = auto()  # >
@@ -58,8 +58,7 @@ _PATTERNS: list[tuple[TokenType, re.Pattern[str]]] = [
     (TokenType.TAB_HEADER, re.compile(r'===\s*"[^"]+"')),
     # !!! or ??? admonitions
     (TokenType.ADMONITION, re.compile(r"(?:!!!|\?\?\?)\s+\w+(?:\s+\"[^\"]+\")?")),
-    # Single-line HTML tag (kept permissive; full parsing happens later)
-    (TokenType.HTML_TAG, re.compile(r"<[/A-Za-z][^>]*>$")),
+    (TokenType.HTML_TAG, re.compile(r"<[/A-Za-z][^>]*>.*$")),
 ]
 
 
