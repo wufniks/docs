@@ -1,6 +1,7 @@
 """Tests for the markdown parser."""
 
 from pipeline.tools.parser import (
+    CodeBlock,
     Document,
     Heading,
     Paragraph,
@@ -74,10 +75,10 @@ EXAMPLE_ADMONITION_BLANK = """\
 EXPECTED_ADMONITION_BLANK = """\
 <Accordion title="Example Title">
   Paragraph 1
-
+  
   Paragraph 2
 </Accordion>
-"""
+"""  # noqa: W293
 
 
 def test_example_admonition_with_blank_line() -> None:
@@ -88,17 +89,13 @@ def test_example_admonition_with_blank_line() -> None:
 INPUT_FRONT_MATTER = """\
 ---
 title: Example Document
+other_field: value
 ---
 # Example Heading
 This is a simple document with front matter.
 """
 
 EXPECTED_FRONT_MATTER = """\
----
-title: Example Document
-
----
-
 
 # Example Heading
 
@@ -108,6 +105,7 @@ This is a simple document with front matter.
 
 def test_front_matter_ignored_in_output() -> None:
     """Test that front matter is ignored in Mintlify output."""
+    # Let's test the AST first.
     assert to_mint(INPUT_FRONT_MATTER) == EXPECTED_FRONT_MATTER
 
 
@@ -277,3 +275,42 @@ EXPECTED_CODE_BLOCK_IN_TAB = """\
 def test_code_block_in_tab() -> None:
     """Test parsing a code block inside a tab."""
     assert to_mint(INPUT_CODE_BLOCK_IN_TAB) == EXPECTED_CODE_BLOCK_IN_TAB
+
+
+INPUT_CODE_FENCE = """\
+``` 
+def example_function():
+    print("This is an example function.")
+```
+"""  # noqa: W291
+
+EXPECTED_CODE_FENCE = """\
+```
+def example_function():
+    print("This is an example function.")
+```
+"""
+
+
+def test_code_fence() -> None:
+    """Test parsing a code fence."""
+    assert to_mint(INPUT_CODE_FENCE) == EXPECTED_CODE_FENCE
+
+
+INPUT_CODE_BLOCK_WITH_BLANK_LINE = """\
+```python
+def foo():
+    x = 1
+    
+    y = 2
+```
+"""  # noqa: W293
+
+
+def test_long_code_block() -> None:
+    """Test parsing a long code block."""
+    ast = Parser(INPUT_CODE_BLOCK_WITH_BLANK_LINE).parse()
+    first_block = ast.blocks[0]
+    assert isinstance(first_block, CodeBlock)
+    assert first_block.language == "python"
+    assert first_block.content == "def foo():\n    x = 1\n    \n    y = 2"

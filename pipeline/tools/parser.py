@@ -55,7 +55,7 @@ class CodeBlock(Node):
     """Fenced code block (```lang [meta])."""
 
     language: str | None
-    meta: str
+    meta: str | None
     content: str
 
 
@@ -142,7 +142,7 @@ class Parser:
         """Parse *source* and return an AST root."""
         blocks: list[Node] = []
 
-        if self._match(TokenType.FRONT_MATTER):
+        if self._check(TokenType.FRONT_MATTER):
             blocks.append(self._parse_front_matter())
 
         while not self._check(TokenType.EOF):
@@ -239,7 +239,14 @@ class Parser:
         """Parse a fenced code block (```lang [meta])."""
         open_token = self._advance()
         fence_body = open_token.value[3:].strip()
-        language, meta = [*fence_body.split(None, 1), ""][:2]
+
+        parts = fence_body.split(" ", maxsplit=1)
+
+        if len(parts) == 1:
+            language = parts[0] if parts[0] else None
+            meta = ""
+        else:
+            language, meta = parts
 
         # All lines that belong to this fenced block will have an
         # indent *at least* as big as the opening fence.  Everything
@@ -249,11 +256,6 @@ class Parser:
         body_lines: list[str] = []
         while not self._check(TokenType.FENCE):
             tok = self._advance()
-
-            # Blank tokens keep the line empty
-            if tok.type == TokenType.BLANK:
-                body_lines.append("")
-
             # Preserve **relative** indentation of the code block
             rel_ident = max(0, tok.indent - fence_indent)
             body_lines.append(" " * rel_ident + tok.value)
@@ -417,11 +419,8 @@ class MintPrinter:
 
     def _add_line(self, line: str) -> None:
         """Add a line with proper indentation."""
-        if line.strip():
-            indent = "  " * self.indent_level
-            self.output.append(f"{indent}{line}")
-        else:
-            self.output.append("")
+        indent = "  " * self.indent_level
+        self.output.append(f"{indent}{line}")
 
     def _visit(self, node: Node) -> None:
         """Visit a node and dispatch to the appropriate handler."""
@@ -578,14 +577,17 @@ class MintPrinter:
         raise NotImplementedError
 
     def _visit_frontmatter(self, node: FrontMatter) -> None:
-        """Visit a front matter node (ignored in output)."""
-        raise NotImplementedError
+        """Remove front matter from the output."""
 
     def _visit_htmlblock(self, node: HTMLBlock) -> None:
         """Visit an HTML block node."""
         # Output HTML content as-is
-        for line in node.content.split("\n"):
-            self._add_line(line)
+        lines = node.content.split("\n")
+        for i, line in enumerate(lines):
+            if line.strip() or i == 0:
+                self._add_line(line)
+            else:
+                self._add_line("")
 
 
 def to_mint(markdown: str) -> str:
