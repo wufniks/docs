@@ -11,6 +11,7 @@ indentation and other nuances of Markdown syntax.
 
 from __future__ import annotations
 
+import re
 import typing
 from dataclasses import dataclass
 
@@ -331,10 +332,10 @@ class Parser:
         tag, *tail = header_tok.value.split(None, 2)
         kind = tail[0].lower() if tail else "note"
         expected_tail_length = 2
-        title = tail[1].strip('"') if len(tail) == expected_tail_length else ""
-
+        title = tail[1] if len(tail) == expected_tail_length else ""
+        # Remove whitespace (especially trailing whitespace)
+        title = title.strip(" ").strip('"')
         body_blocks = self._parse_blocks_until_indent(header_tok.indent)
-
         return Admonition(
             tag=tag,
             kind=kind,
@@ -409,6 +410,7 @@ class MintPrinter:
         """Initialize the printer."""
         self.output: list[str] = []
         self.indent_level: int = 0
+        self.printed_first_heading = False
 
     def print(self, node: Node) -> str:
         """Convert an AST node to Mintlify markdown string."""
@@ -435,21 +437,58 @@ class MintPrinter:
     def _visit_document(self, node: Document) -> None:
         """Visit a document node."""
         for i, block in enumerate(node.blocks):
+            self._visit(block)
             if i > 0:
                 self._add_line("")
-            self._visit(block)
 
     def _visit_heading(self, node: Heading) -> None:
         """Visit a heading node."""
-        prefix = "#" * node.level
-        self._add_line(f"{prefix} {node.value}")
+
+        def _slugify(text: str) -> str:
+            """Convert arbitrary text to a URL‑safe slug."""
+            text = text.lower()
+            # Replace any sequence of non‑alphanumerics with a single hyphen
+            text = re.sub(r"[^a-z0-9]+", "-", text)
+            # Collapse consecutive hyphens and trim leading/trailing ones
+            return re.sub(r"-+", "-", text).strip("-")
+
+        # --- Extract anchor id (explicit or implicit) and clean heading text ---
+        acorn_pattern = r"\{\s*#\s*([A-Za-z0-9\-_]+)\s*\}"
+        paren_pattern = r"\(([^)]+)\)\s*$"  # anchor in trailing parentheses
+
+        anchor_id: str | None = None
+        heading_text = node.value
+
+        acorn_match = re.search(acorn_pattern, heading_text)
+        if acorn_match:
+            anchor_id = acorn_match.group(1)
+            heading_text = re.sub(acorn_pattern, "", heading_text).strip()
+        else:
+            paren_match = re.search(paren_pattern, heading_text)
+            if paren_match:
+                anchor_id = paren_match.group(1)
+                heading_text = re.sub(paren_pattern, "", heading_text).strip()
+
+        if anchor_id:
+            anchor_id = _slugify(anchor_id)
+
+        # --- Emit result ---
+        if self.printed_first_heading:
+            if anchor_id:
+                self._add_line(f'<a id="{anchor_id}"></a>')
+            prefix = "#" * node.level
+            self._add_line(f"{prefix} {heading_text}")
+        else:
+            # Convert the very first heading into front‑matter
+            self._add_line("---")
+            self._add_line(f"title: {heading_text}")
+            self._add_line("---")
+            self.printed_first_heading = True
 
     def _visit_paragraph(self, node: Paragraph) -> None:
         """Visit a paragraph node."""
         for i, line in enumerate(node.value):
             self._add_line(line.strip())
-            if i > 0:
-                self._add_line("\n")
 
     def _visit_codeblock(self, node: CodeBlock) -> None:
         """Visit a code block node and format for Mintlify."""
@@ -475,7 +514,7 @@ class MintPrinter:
     def _visit_unorderedlist(self, node: UnorderedList) -> None:
         """Visit an unordered list node."""
         for item in node.items:
-            self._visit_list_item(item, "- ")
+            self._visit_list_item(item, "* ")
 
     def _visit_orderedlist(self, node: OrderedList) -> None:
         """Visit an ordered list node."""
@@ -509,7 +548,11 @@ class MintPrinter:
 
         self.indent_level += 1
         for tab in node.tabs:
-            self._add_line(f'<Tab title="{tab.title}">')
+            # Let's remove '`' from the title if it exists
+            # '`' does highlighting in mkdocs, but Mintlify doesn't support it
+            # and it looks weird in the output.
+            title = tab.title.strip("`")
+            self._add_line(f'<Tab title="{title}">')
 
             self.indent_level += 1
             for i, block in enumerate(tab.blocks):

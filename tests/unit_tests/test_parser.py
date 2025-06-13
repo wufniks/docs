@@ -95,9 +95,11 @@ other_field: value
 This is a simple document with front matter.
 """
 
+# We convert the first heading to a Mintlify front matter block.
 EXPECTED_FRONT_MATTER = """\
-
-# Example Heading
+---
+title: Example Heading
+---
 
 This is a simple document with front matter.
 """
@@ -174,19 +176,15 @@ def test_code_block_with_extras() -> None:
 
 
 INPUT_WITH_UNORDERED_LIST = """\
-# Example List
-
 - Item 1
 - Item 2
 - Item 3
 """
 
 EXPECTED_UNORDERED_LIST = """\
-# Example List
-
-- Item 1
-- Item 2
-- Item 3
+* Item 1
+* Item 2
+* Item 3
 """
 
 
@@ -196,16 +194,12 @@ def test_unordered_list() -> None:
 
 
 INPUT_WITH_ORDERED_LIST = """\
-# Example Ordered List
-
 1. First item
 2. Second item
 3. Third item
 """
 
 EXPECTED_ORDERED_LIST = """\
-# Example Ordered List
-
 1. First item
 2. Second item
 3. Third item
@@ -314,3 +308,46 @@ def test_long_code_block() -> None:
     assert isinstance(first_block, CodeBlock)
     assert first_block.language == "python"
     assert first_block.content == "def foo():\n    x = 1\n    \n    y = 2"
+
+
+NOTE_WITH_TITLE = """\
+!!! info "Requirements" 
+
+    content
+
+"""
+
+EXPECTED_NOTE_WITH_TITLE = """\
+<Info>
+  **Requirements**
+  content
+</Info>
+"""
+
+
+def test_note_with_title() -> None:
+    """Test parsing a note with a title."""
+    assert to_mint(NOTE_WITH_TITLE) == EXPECTED_NOTE_WITH_TITLE
+
+
+INPUT_TABLE = """\
+| Property | Description                           |
+| -------- | ------------------------------------- |
+| Name     | Full name of user                     |
+| Age      | Reported age                          |
+| Joined   | Whether the user joined the community |
+"""
+
+
+def test_table() -> None:
+    """Test parsing a table."""
+    assert to_mint(INPUT_TABLE) == INPUT_TABLE
+
+
+INDENTED_BLOCK = """\
+This block has indentation:
+
+    {
+        "key": "value"
+    }
+"""
