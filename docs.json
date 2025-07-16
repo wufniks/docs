@@ -1,0 +1,382 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "palm",
+  "name": "LangChain docs",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "src/index"
+            ]
+          },
+          {
+            "group": "Get started",
+            "pages": [
+              {
+                "group": "Quickstart",
+                "pages": [
+                  "src/agents/agents"
+                ]
+              },
+              {
+                "group": "LangGraph basics",
+                "pages": [
+                  "src/concepts/why-langgraph",
+                  "src/tutorials/get-started/1-build-basic-chatbot",
+                  "src/tutorials/get-started/2-add-tools",
+                  "src/tutorials/get-started/3-add-memory",
+                  "src/tutorials/get-started/4-human-in-the-loop",
+                  "src/tutorials/get-started/5-customize-state",
+                  "src/tutorials/get-started/6-time-travel"
+                ]
+              },
+              {
+                "group": "Deployment",
+                "pages": [
+                  "src/tutorials/deployment"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Prebuilt agents",
+            "pages": [
+              "src/agents/overview",
+              "src/agents/run_agents",
+              "src/agents/streaming",
+              "src/agents/models",
+              "src/agents/tools",
+              "src/agents/mcp",
+              "src/agents/context",
+              "src/agents/memory",
+              "src/agents/human-in-the-loop",
+              "src/agents/multi-agent",
+              "src/agents/evals",
+              "src/agents/deployment",
+              "src/agents/ui"
+            ]
+          },
+          {
+            "group": "LangGraph framework",
+            "pages": [
+              {
+                "group": "Agent architectures",
+                "pages": [
+                  "src/concepts/agentic_concepts",
+                  "src/tutorials/workflows"
+                ]
+              },
+              {
+                "group": "Graphs",
+                "pages": [
+                  "src/concepts/low_level",
+                  "src/concepts/pregel",
+                  "src/how-tos/graph-api"
+                ]
+              },
+              {
+                "group": "Streaming",
+                "pages": [
+                  "src/concepts/streaming",
+                  "src/how-tos/streaming"
+                ]
+              },
+              {
+                "group": "Persistence",
+                "pages": [
+                  "src/concepts/persistence",
+                  "src/concepts/durable_execution",
+                  "src/how-tos/persistence"
+                ]
+              },
+              {
+                "group": "Memory",
+                "pages": [
+                  "src/concepts/memory",
+                  "src/how-tos/memory"
+                ]
+              },
+              {
+                "group": "Human-in-the-loop",
+                "pages": [
+                  "src/concepts/human_in_the_loop",
+                  "src/how-tos/human_in_the_loop/add-human-in-the-loop"
+                ]
+              },
+              {
+                "group": "Breakpoints",
+                "pages": [
+                  "src/concepts/breakpoints",
+                  "src/how-tos/human_in_the_loop/breakpoints"
+                ]
+              },
+              {
+                "group": "Time travel",
+                "pages": [
+                  "src/concepts/time-travel",
+                  "src/how-tos/human_in_the_loop/time-travel"
+                ]
+              },
+              {
+                "group": "Tools",
+                "pages": [
+                  "src/concepts/tools",
+                  "src/how-tos/tool-calling"
+                ]
+              },
+              {
+                "group": "Subgraphs",
+                "pages": [
+                  "src/concepts/subgraphs",
+                  "src/how-tos/subgraph"
+                ]
+              },
+              {
+                "group": "Multi-agent",
+                "pages": [
+                  "src/concepts/multi_agent",
+                  "src/how-tos/multi_agent"
+                ]
+              },
+              {
+                "group": "Functional API",
+                "pages": [
+                  "src/concepts/functional_api",
+                  "src/how-tos/use-functional-api"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "LangGraph Platform",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "src/concepts/langgraph_platform"
+                ]
+              },
+              {
+                "group": "Get started",
+                "pages": [
+                  "src/tutorials/langgraph-platform/local-server",
+                  "src/cloud/quick_start"
+                ]
+              },
+              {
+                "group": "Components",
+                "pages": [
+                  "src/concepts/langgraph_components",
+                  {
+                    "group": "LangGraph Server",
+                    "pages": [
+                      "src/concepts/langgraph_server",
+                      {
+                        "group": "Application structure",
+                        "pages": [
+                          "src/concepts/application_structure",
+                          "src/cloud/deployment/setup",
+                          "src/cloud/deployment/setup_pyproject",
+                          "src/cloud/deployment/setup_javascript",
+                          "src/cloud/deployment/custom_docker"
+                        ]
+                      }
+                    ]
+                  },
+                  "src/concepts/langgraph_cli",
+                  {
+                    "group": "LangGraph Studio",
+                    "pages": [
+                      "src/concepts/langgraph_studio",
+                      "src/cloud/how-tos/studio/quick_start",
+                      "src/cloud/how-tos/invoke_studio",
+                      "src/cloud/how-tos/studio/manage_assistants",
+                      "src/cloud/how-tos/threads_studio",
+                      "src/cloud/how-tos/iterate_graph_studio",
+                      "src/cloud/how-tos/clone_traces_studio",
+                      "src/cloud/how-tos/datasets_studio"
+                    ]
+                  },
+                  "src/concepts/sdk"
+                ]
+              },
+              {
+                "group": "Data management",
+                "pages": [
+                  "src/cloud/deployment/semantic_search",
+                  "src/how-tos/ttl/configure_ttl"
+                ]
+              },
+              {
+                "group": "Authentication & access control",
+                "pages": [
+                  "src/concepts/auth",
+                  "src/how-tos/auth/custom_auth",
+                  "src/how-tos/auth/openapi_security"
+                ]
+              },
+              {
+                "group": "Assistants",
+                "pages": [
+                  "src/concepts/assistants",
+                  "src/cloud/how-tos/configuration_cloud"
+                ]
+              },
+              {
+                "group": "Threads",
+                "pages": [
+                  "src/cloud/concepts/threads",
+                  "src/cloud/how-tos/use_threads"
+                ]
+              },
+              {
+                "group": "Runs",
+                "pages": [
+                  "src/cloud/concepts/runs",
+                  "src/cloud/how-tos/background_run",
+                  "src/cloud/how-tos/same-thread",
+                  "src/cloud/how-tos/cron_jobs",
+                  "src/cloud/how-tos/stateless_runs",
+                  "src/cloud/how-tos/configurable_headers"
+                ]
+              },
+              {
+                "group": "Streaming",
+                "pages": [
+                  "src/cloud/concepts/streaming",
+                  "src/cloud/how-tos/streaming"
+                ]
+              },
+              {
+                "group": "Human-in-the-loop",
+                "pages": [
+                  "src/cloud/how-tos/add-human-in-the-loop"
+                ]
+              },
+              {
+                "group": "Breakpoints",
+                "pages": [
+                  "src/cloud/how-tos/human_in_the_loop_breakpoint"
+                ]
+              },
+              {
+                "group": "Time travel",
+                "pages": [
+                  "src/cloud/how-tos/human_in_the_loop_time_travel"
+                ]
+              },
+              {
+                "group": "MCP",
+                "pages": [
+                  "src/concepts/server-mcp"
+                ]
+              },
+              {
+                "group": "Double-texting",
+                "pages": [
+                  "src/concepts/double_texting",
+                  "src/cloud/how-tos/interrupt_concurrent",
+                  "src/cloud/how-tos/rollback_concurrent",
+                  "src/cloud/how-tos/reject_concurrent",
+                  "src/cloud/how-tos/enqueue_concurrent"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "src/cloud/concepts/webhooks",
+                  "src/cloud/how-tos/webhooks"
+                ]
+              },
+              {
+                "group": "Cron jobs",
+                "pages": [
+                  "src/cloud/concepts/cron_jobs",
+                  "src/cloud/how-tos/cron_jobs"
+                ]
+              },
+              {
+                "group": "Server customization",
+                "pages": [
+                  "src/how-tos/http/custom_lifespan",
+                  "src/how-tos/http/custom_middleware",
+                  "src/how-tos/http/custom_routes"
+                ]
+              },
+              {
+                "group": "Deployment",
+                "pages": [
+                  "src/concepts/deployment_options",
+                  "src/concepts/langgraph_data_plane",
+                  "src/concepts/langgraph_control_plane",
+                  {
+                    "group": "Deployment options",
+                    "pages": [
+                      {
+                        "group": "Cloud SaaS",
+                        "pages": [
+                          "src/concepts/langgraph_cloud",
+                          "src/cloud/deployment/cloud"
+                        ]
+                      },
+                      {
+                        "group": "Self-Hosted Data Plane",
+                        "pages": [
+                          "src/concepts/langgraph_self_hosted_data_plane",
+                          "src/cloud/deployment/self_hosted_data_plane"
+                        ]
+                      },
+                      {
+                        "group": "Self-Hosted Control Plane",
+                        "pages": [
+                          "src/concepts/langgraph_self_hosted_control_plane",
+                          "src/cloud/deployment/self_hosted_control_plane"
+                        ]
+                      },
+                      {
+                        "group": "Standalone Container",
+                        "pages": [
+                          "src/concepts/langgraph_standalone_container",
+                          "src/cloud/deployment/standalone_container"
+                        ]
+                      }
+                    ]
+                  },
+                  "src/concepts/scalability_and_resilience",
+                  "src/concepts/plans"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "LangChain Labs",
+        "groups": [
+          {
+            "group": "LangChain Labs",
+            "pages": [
+              "src/labs/index",
+              {
+                "group": "SWE",
+                "pages": [
+                  "src/labs/swe"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
